@@ -1,0 +1,35 @@
+name: "Run WireViz"
+description: "Run WireViz on input files with configurable options"
+
+inputs:
+  files:
+    description: "Input file(s) to process"
+    required: true
+  format:
+    description: "Output formats (g: GV, h: HTML, p: PNG, s: SVG, t: TSV)"
+    required: false
+    default: "hpst"
+  prepend:
+    description: "YAML file to prepend to the input file"
+    required: false
+  output_dir:
+    description: "Directory to use for output files"
+    required: false
+  output_name:
+    description: "File name (without extension) to use for output files"
+    required: false
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - "-f"
+    - ${{ github.workspace }}/${{ inputs.files }}
+    - "-m"
+    - ${{ inputs.format }}
+    - "-p"
+    - ${{ inputs.prepend }}
+    - "-o"
+    - ${{ inputs.output_dir }}
+    - "-n"
+    - ${{ inputs.output_name }}
